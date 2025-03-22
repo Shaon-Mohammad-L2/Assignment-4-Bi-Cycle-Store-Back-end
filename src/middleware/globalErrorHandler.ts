@@ -9,7 +9,6 @@ import handleMongooseValidationError from "../errors/handleMongooseValidationErr
 import handleMongooseCastError from "../errors/handleMongooseCastError";
 import handleMongooseDuplicateError from "../errors/handleMongooseDuplicateError";
 import AppError from "../errors/AppError";
-import { removeUploadedFiles } from "../modules/file/file_utils";
 
 const globalErrorHandler = async (
   err: any,
