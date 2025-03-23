@@ -1,19 +1,12 @@
 import express from "express";
+import { UserRoutes } from "../modules/users/user_route";
 
 const routers = express.Router();
 
-const authRouter = routers.get("/", (req, res) => {
-  res.status(200).json({
-    server: "Active",
-    success: true,
-    stutas: 200,
-    message: "Routes.",
-  });
-});
 const moduleRoutes = [
   {
-    path: "/auth",
-    route: authRouter,
+    path: "/users",
+    route: UserRoutes,
   },
 ];
 
