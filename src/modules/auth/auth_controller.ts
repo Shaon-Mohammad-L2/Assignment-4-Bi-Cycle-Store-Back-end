@@ -28,4 +28,28 @@ const loginUser = catchAsync(async (req, res) => {
   });
 });
 
-export const AuthControllers = { loginUser };
+//user change password.
+const changePassword = catchAsync(async (req, res) => {
+  const result = await AuthServices.changePasswordIntoDB(req.user, req.body);
+
+  const { accessToken, refreshToken } = result;
+
+  //set refresh token in cookie.
+  res.cookie("refreshToken", refreshToken, {
+    secure: config.NODE_ENV === "production",
+    sameSite: "strict",
+    httpOnly: true,
+    // expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365)
+  });
+  sendResponse(res, {
+    success: true,
+    status: 201,
+    message: "Password changed successfully",
+    data: {
+      token: accessToken,
+      refreshToken,
+    },
+  });
+});
+
+export const AuthControllers = { loginUser, changePassword };

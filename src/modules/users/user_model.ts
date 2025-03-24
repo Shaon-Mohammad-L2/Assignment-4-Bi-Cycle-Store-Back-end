@@ -77,6 +77,8 @@ UserSchema.statics.isUserBlockedOrDeletedFindBy_id = async function (
   if (user.isDeleted) {
     throw new AppError(401, "This user is already deleted!");
   }
+
+  return user;
 };
 //statics methods for user password matched.
 UserSchema.statics.isPasswordMached = async function (

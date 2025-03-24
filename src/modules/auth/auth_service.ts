@@ -4,6 +4,7 @@ import { User } from "../users/user_model";
 import { TJwtPayload, TLoginUser } from "./auth_interface";
 import { createToken } from "./auth_utils";
 import config from "../../config";
+import { JwtPayload } from "jsonwebtoken";
 
 const loginUser = async (payload: TLoginUser) => {
   //checking if the user is exits in the database.
@@ -55,4 +56,76 @@ const loginUser = async (payload: TLoginUser) => {
   return { accessToken, refreshToken };
 };
 
-export const AuthServices = { loginUser };
+// user change password into db.
+const changePasswordIntoDB = async (
+  userData: JwtPayload,
+  payload: { oldPassword: string; newPassword: string }
+) => {
+  //checking if the user is exist in the database.
+  const _id = userData?.user_id;
+  const user = await User.findOne({ _id, role: userData?.role }).select(
+    "+password"
+  );
+  if (!user) {
+    throw new AppError(404, "This user is not found!");
+  }
+
+  //checking if the user is already deleted .
+  const isDeleted = user?.isDeleted;
+  if (isDeleted) {
+    throw new AppError(403, "This user is already deleted!");
+  }
+
+  //checkign if the user is blocked.
+  const userStatus = user?.status;
+  if (userStatus === "blocked") {
+    throw new AppError(403, "This user is blocked!");
+  }
+
+  //checking if the password is matched or not.
+  const isPasswordMached = await User.isPasswordMached(
+    payload.oldPassword,
+    user.password
+  );
+  if (!isPasswordMached) {
+    throw new AppError(400, "Old password is incorrect!");
+  }
+
+  // Ensure the new password is different from the old password
+  if (payload.oldPassword === payload.newPassword) {
+    throw new AppError(
+      400,
+      "New password cannot be the same as the old password!"
+    );
+  }
+
+  // set new password.
+  user.password = payload.newPassword;
+  user.passwordChangedAt = new Date();
+
+  await user.save();
+
+  // set jwt payload for token.
+  const jwtPayload: TJwtPayload = {
+    user_id: user._id as Types.ObjectId,
+    role: user.role,
+  };
+
+  // create a access token
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_token_secret as string,
+    config.jwt_access_token_expires_in as string
+  );
+
+  //create a refresh token
+  const refreshToken = createToken(
+    jwtPayload,
+    config.jwt_refresh_token_secret as string,
+    config.jwt_refresh_token_expires_in as string
+  );
+
+  //return access and refresh token.
+  return { accessToken, refreshToken };
+};
+export const AuthServices = { loginUser, changePasswordIntoDB };

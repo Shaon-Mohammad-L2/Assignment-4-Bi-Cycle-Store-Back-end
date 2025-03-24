@@ -22,7 +22,7 @@ export interface UserModel extends Model<TUser> {
   isUserAlreadyExistsBy_email(email: string): Promise<TUser>;
   isUserBlockedOrDeletedFindBy_id(
     _id: mongoose.Types.ObjectId
-  ): Promise<Record<string, unknown>>;
+  ): Promise<TUser | null>;
   isPasswordMached(
     plainTextPassword: string,
     hashedPassword: string
