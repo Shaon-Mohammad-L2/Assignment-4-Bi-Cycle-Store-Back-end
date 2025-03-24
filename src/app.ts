@@ -2,6 +2,8 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import routers from "./routers";
+import globalErrorHandler from "./middleware/globalErrorHandler";
+import notFound from "./middleware/notFound";
 
 const app = express();
 app.use(express.json());
@@ -26,5 +28,7 @@ const homeRoute = (req: Request, res: Response) => {
 };
 
 app.get("/", homeRoute);
-
+// Error handling middleware
+app.use(globalErrorHandler as unknown as express.ErrorRequestHandler);
+app.use(notFound as unknown as express.ErrorRequestHandler);
 export default app;

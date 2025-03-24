@@ -1,14 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextFunction, Request, Response } from "express";
 import { TErrorScouce } from "../interface/errors";
-import config from "../config";
 import { ZodError } from "zod";
 import handleZodValidationError from "../errors/handleZodValidationError";
 import handleMongooseValidationError from "../errors/handleMongooseValidationErro";
 import handleMongooseCastError from "../errors/handleMongooseCastError";
 import handleMongooseDuplicateError from "../errors/handleMongooseDuplicateError";
 import AppError from "../errors/AppError";
+import config from "../config";
 
 const globalErrorHandler = async (
   err: any,

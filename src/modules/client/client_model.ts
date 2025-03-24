@@ -7,7 +7,6 @@ const ClientSchema = new mongoose.Schema<TClient, ClientModel>(
       type: mongoose.Schema.Types.ObjectId,
       required: [true, "User ID is required!"],
       index: false,
-      unique: true,
       ref: "User",
     },
     email: {
