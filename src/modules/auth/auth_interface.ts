@@ -10,3 +10,14 @@ export type TJwtPayload = {
   user_id: mongoose.Types.ObjectId;
   role: TUserRole;
 };
+
+export type TPasswordReset = {
+  email: string;
+  resetPasswordOTP?: string;
+  resetPasswordOTPExpires?: Date;
+  otpRequestCount?: number;
+  otpRequestLockUntil?: Date;
+  invalidOtpAttempts?: number;
+  otpLockUntil?: Date;
+  isOTPVerified: boolean;
+};

@@ -66,4 +66,20 @@ const refreshToken = catchAsync(async (req, res) => {
   });
 });
 
-export const AuthControllers = { loginUser, changePassword, refreshToken };
+// user forgot password.
+const forgotPassword = catchAsync(async (req, res) => {
+  const result = await AuthServices.forgotPassword(req.body);
+  sendResponse(res, {
+    status: 200,
+    success: true,
+    message: "Please check your email and verify with 10 menutes!",
+    data: result,
+  });
+});
+
+export const AuthControllers = {
+  loginUser,
+  changePassword,
+  refreshToken,
+  forgotPassword,
+};
