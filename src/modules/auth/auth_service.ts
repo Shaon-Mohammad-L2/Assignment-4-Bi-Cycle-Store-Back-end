@@ -2,7 +2,7 @@ import { Types } from "mongoose";
 import AppError from "../../errors/AppError";
 import { User } from "../users/user_model";
 import { TJwtPayload, TLoginUser } from "./auth_interface";
-import { createToken } from "./auth_utils";
+import { createToken, verifyToken } from "./auth_utils";
 import config from "../../config";
 import { JwtPayload } from "jsonwebtoken";
 
@@ -128,4 +128,59 @@ const changePasswordIntoDB = async (
   //return access and refresh token.
   return { accessToken, refreshToken };
 };
-export const AuthServices = { loginUser, changePasswordIntoDB };
+
+// create access token by refresh token.
+const refreshToken = async (token: string) => {
+  if (!token) {
+    throw new AppError(401, "You are not authorized");
+  }
+
+  // check if the token is valid.
+  const decoded = verifyToken(token, config.jwt_refresh_token_secret as string);
+
+  const { user_id, iat } = decoded;
+  //checking if the user is exist in the database
+  const user = await User.isUserAlreadyExistsBy_id(user_id);
+  if (!user) {
+    throw new AppError(404, "This user is not found!");
+  }
+
+  // checking if the user is alrady deleted.
+  const isDeleted = user.isDeleted;
+  if (isDeleted) {
+    throw new AppError(403, "This user is deleted!");
+  }
+  // checking if the user is blocked
+  const userStatus = user.status;
+  if (userStatus === "blocked") {
+    throw new AppError(403, "This user is blocked!");
+  }
+
+  // checking if the password change time.
+  if (user.passwordChangedAt) {
+    const isPasswordChanged = User.isJWTIssuedAtBeforePasswordChanged(
+      user.passwordChangedAt,
+      iat as number
+    );
+    if (isPasswordChanged) {
+      throw new AppError(401, "You are not authorized!");
+    }
+  }
+
+  // set jwt payload for token.
+  const jwtPayload: TJwtPayload = {
+    user_id: user._id as Types.ObjectId,
+    role: user.role,
+  };
+
+  // create a access token
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_token_secret as string,
+    config.jwt_access_token_expires_in as string
+  );
+
+  return accessToken;
+};
+
+export const AuthServices = { loginUser, changePasswordIntoDB, refreshToken };

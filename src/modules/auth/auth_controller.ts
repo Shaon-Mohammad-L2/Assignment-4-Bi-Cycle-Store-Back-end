@@ -52,4 +52,18 @@ const changePassword = catchAsync(async (req, res) => {
   });
 });
 
-export const AuthControllers = { loginUser, changePassword };
+//create user access token by refresh token.
+const refreshToken = catchAsync(async (req, res) => {
+  const result = await AuthServices.refreshToken(req.cookies.refreshToken);
+
+  sendResponse(res, {
+    status: 201,
+    success: true,
+    message: "Token Created Successfully!",
+    data: {
+      token: result,
+    },
+  });
+});
+
+export const AuthControllers = { loginUser, changePassword, refreshToken };

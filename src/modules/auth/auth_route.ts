@@ -20,4 +20,12 @@ router.post(
   validateRequest(AuthValidation.changePasswordValidationZodSchema),
   AuthControllers.changePassword
 );
+
+// create user access token by refresh token.
+router.post(
+  "/refresh-token",
+  validateRequest(AuthValidation.refreshTokenCookiesValidationZodSchema),
+  AuthControllers.refreshToken
+);
+
 export const AuthRoutes = router;
