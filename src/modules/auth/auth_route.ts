@@ -42,4 +42,11 @@ router.post(
   AuthControllers.verifyOTP
 );
 
+// user reset password.
+router.post(
+  "/reset-password",
+  validateRequest(AuthValidation.resetPasswordValidationZodSchema),
+  AuthControllers.resetPassword
+);
+
 export const AuthRoutes = router;

@@ -14,6 +14,8 @@ import { JwtPayload } from "jsonwebtoken";
 import { PasswordReset } from "./auth_model";
 import { TEmailFormate } from "../../interface/emailFormat";
 import sendEmail from "../../utils/sendEmail";
+import { TUserRole } from "../users/user_interface";
+import bcrypt from "bcrypt";
 
 const loginUser = async (payload: TLoginUser) => {
   //checking if the user is exits in the database.
@@ -336,10 +338,62 @@ const verifyOTP = async (payload: { email: string; otp: string }) => {
   await passwordResetModel.save();
   return;
 };
+
+//reset Password .
+const resetPassword = async (payload: {
+  email: string;
+  newPassword: string;
+}) => {
+  const passwordResetModel = await PasswordReset.findOne({
+    email: payload.email,
+  });
+
+  if (!passwordResetModel || !passwordResetModel.isOTPVerified) {
+    throw new AppError(400, "OTP not verified.");
+  }
+
+  const newPasswordHashed = await bcrypt.hash(
+    payload.newPassword,
+    Number(config.bcrypt_salt_rounds)
+  );
+
+  // set new password
+  const user = await User.findOneAndUpdate(
+    { email: payload.email },
+    { password: newPasswordHashed, passwordChangedAt: new Date() },
+    { new: true }
+  );
+
+  // Clean up reset token
+  await passwordResetModel.deleteOne({ email: payload.email });
+
+  // set jwt payload.
+  const jwtPayload: TJwtPayload = {
+    user_id: user?._id as Types.ObjectId,
+    role: user?.role as TUserRole,
+  };
+
+  // create access token
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_token_secret as string,
+    config.jwt_access_token_expires_in as string
+  );
+  // create refresh token.
+  const refreshToken = createToken(
+    jwtPayload,
+    config.jwt_refresh_token_secret as string,
+    config.jwt_refresh_token_expires_in as string
+  );
+
+  return { accessToken, refreshToken };
+};
+
 export const AuthServices = {
   loginUser,
   changePasswordIntoDB,
   refreshToken,
   forgotPassword,
   verifyOTP,
+  resetPassword,
 };

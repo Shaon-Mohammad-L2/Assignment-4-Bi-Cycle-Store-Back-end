@@ -47,7 +47,6 @@ const changePassword = catchAsync(async (req, res) => {
     message: "Password changed successfully",
     data: {
       token: accessToken,
-      refreshToken,
     },
   });
 });
@@ -88,10 +87,32 @@ const verifyOTP = catchAsync(async (req, res) => {
   });
 });
 
+//user resetPassword
+const resetPassword = catchAsync(async (req, res) => {
+  const result = await AuthServices.resetPassword(req.body);
+  const { accessToken, refreshToken } = result;
+
+  //set refresh token in cookie.
+  res.cookie("refreshToken", refreshToken, {
+    secure: config.NODE_ENV === "production",
+    sameSite: "strict",
+    httpOnly: true,
+  });
+
+  sendResponse(res, {
+    status: 200,
+    success: true,
+    message: "Password reset successfully!",
+    data: {
+      token: accessToken,
+    },
+  });
+});
 export const AuthControllers = {
   loginUser,
   changePassword,
   refreshToken,
   forgotPassword,
   verifyOTP,
+  resetPassword,
 };
