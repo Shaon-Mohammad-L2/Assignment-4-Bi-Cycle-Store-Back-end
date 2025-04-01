@@ -7,6 +7,8 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const routers_1 = __importDefault(require("./routers"));
+const globalErrorHandler_1 = __importDefault(require("./middleware/globalErrorHandler"));
+const notFound_1 = __importDefault(require("./middleware/notFound"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
@@ -25,4 +27,7 @@ const homeRoute = (req, res) => {
     });
 };
 app.get("/", homeRoute);
+// Error handling middleware
+app.use(globalErrorHandler_1.default);
+app.use(notFound_1.default);
 exports.default = app;

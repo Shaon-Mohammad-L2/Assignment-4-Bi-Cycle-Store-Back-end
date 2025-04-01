@@ -39,7 +39,7 @@ const loginUser = async (payload: TLoginUser) => {
   // checking user password mached or not.
   const isPasswordMached = await User.isPasswordMached(
     payload.password,
-    user.password
+    user.password,
   );
   if (!isPasswordMached) {
     throw new AppError(403, "Password is incorrect!");
@@ -55,13 +55,13 @@ const loginUser = async (payload: TLoginUser) => {
   const accessToken = createToken(
     jwtPayload,
     config.jwt_access_token_secret as string,
-    config.jwt_access_token_expires_in as string
+    config.jwt_access_token_expires_in as string,
   );
   // create refresh token.
   const refreshToken = createToken(
     jwtPayload,
     config.jwt_refresh_token_secret as string,
-    config.jwt_refresh_token_expires_in as string
+    config.jwt_refresh_token_expires_in as string,
   );
 
   return { accessToken, refreshToken };
@@ -70,12 +70,12 @@ const loginUser = async (payload: TLoginUser) => {
 // user change password into db.
 const changePasswordIntoDB = async (
   userData: JwtPayload,
-  payload: { oldPassword: string; newPassword: string }
+  payload: { oldPassword: string; newPassword: string },
 ) => {
   //checking if the user is exist in the database.
   const _id = userData?.user_id;
   const user = await User.findOne({ _id, role: userData?.role }).select(
-    "+password"
+    "+password",
   );
   if (!user) {
     throw new AppError(404, "This user is not found!");
@@ -96,7 +96,7 @@ const changePasswordIntoDB = async (
   //checking if the password is matched or not.
   const isPasswordMached = await User.isPasswordMached(
     payload.oldPassword,
-    user.password
+    user.password,
   );
   if (!isPasswordMached) {
     throw new AppError(400, "Old password is incorrect!");
@@ -106,7 +106,7 @@ const changePasswordIntoDB = async (
   if (payload.oldPassword === payload.newPassword) {
     throw new AppError(
       400,
-      "New password cannot be the same as the old password!"
+      "New password cannot be the same as the old password!",
     );
   }
 
@@ -126,14 +126,14 @@ const changePasswordIntoDB = async (
   const accessToken = createToken(
     jwtPayload,
     config.jwt_access_token_secret as string,
-    config.jwt_access_token_expires_in as string
+    config.jwt_access_token_expires_in as string,
   );
 
   //create a refresh token
   const refreshToken = createToken(
     jwtPayload,
     config.jwt_refresh_token_secret as string,
-    config.jwt_refresh_token_expires_in as string
+    config.jwt_refresh_token_expires_in as string,
   );
 
   //return access and refresh token.
@@ -171,7 +171,7 @@ const refreshToken = async (token: string) => {
   if (user.passwordChangedAt) {
     const isPasswordChanged = User.isJWTIssuedAtBeforePasswordChanged(
       user.passwordChangedAt,
-      iat as number
+      iat as number,
     );
     if (isPasswordChanged) {
       throw new AppError(401, "You are not authorized!");
@@ -188,7 +188,7 @@ const refreshToken = async (token: string) => {
   const accessToken = createToken(
     jwtPayload,
     config.jwt_access_token_secret as string,
-    config.jwt_access_token_expires_in as string
+    config.jwt_access_token_expires_in as string,
   );
 
   return accessToken;
@@ -228,7 +228,7 @@ const forgotPassword = async (payload: { email: string }) => {
   ) {
     throw new AppError(
       429,
-      "Too many OTP requests. Please try again after 1 hour."
+      "Too many OTP requests. Please try again after 1 hour.",
     );
   }
 
@@ -240,13 +240,13 @@ const forgotPassword = async (payload: { email: string }) => {
     passwordResetModel.resetPasswordOTPExpires > new Date()
   ) {
     passwordResetModel.otpRequestLockUntil = new Date(
-      Date.now() + 60 * 60 * 1000
+      Date.now() + 60 * 60 * 1000,
     ); // Lock for 1 hour
     passwordResetModel.otpRequestCount = 0;
     await passwordResetModel.save();
     throw new AppError(
       429,
-      "Too many OTP requests. Please try again after 1 hour."
+      "Too many OTP requests. Please try again after 1 hour.",
     );
   }
 
@@ -313,7 +313,7 @@ const verifyOTP = async (payload: { email: string; otp: string }) => {
   ) {
     throw new AppError(
       429,
-      "Too many invalid OTP attempts. Please try again after 1 hour."
+      "Too many invalid OTP attempts. Please try again after 1 hour.",
     );
   }
 
@@ -354,14 +354,14 @@ const resetPassword = async (payload: {
 
   const newPasswordHashed = await bcrypt.hash(
     payload.newPassword,
-    Number(config.bcrypt_salt_rounds)
+    Number(config.bcrypt_salt_rounds),
   );
 
   // set new password
   const user = await User.findOneAndUpdate(
     { email: payload.email },
     { password: newPasswordHashed, passwordChangedAt: new Date() },
-    { new: true }
+    { new: true },
   );
 
   // Clean up reset token
@@ -377,13 +377,13 @@ const resetPassword = async (payload: {
   const accessToken = createToken(
     jwtPayload,
     config.jwt_access_token_secret as string,
-    config.jwt_access_token_expires_in as string
+    config.jwt_access_token_expires_in as string,
   );
   // create refresh token.
   const refreshToken = createToken(
     jwtPayload,
     config.jwt_refresh_token_secret as string,
-    config.jwt_refresh_token_expires_in as string
+    config.jwt_refresh_token_expires_in as string,
   );
 
   return { accessToken, refreshToken };

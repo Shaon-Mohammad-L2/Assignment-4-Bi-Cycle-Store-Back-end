@@ -12,13 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const config_1 = __importDefault(require("../config"));
 const zod_1 = require("zod");
 const handleZodValidationError_1 = __importDefault(require("../errors/handleZodValidationError"));
 const handleMongooseValidationErro_1 = __importDefault(require("../errors/handleMongooseValidationErro"));
 const handleMongooseCastError_1 = __importDefault(require("../errors/handleMongooseCastError"));
 const handleMongooseDuplicateError_1 = __importDefault(require("../errors/handleMongooseDuplicateError"));
 const AppError_1 = __importDefault(require("../errors/AppError"));
+const config_1 = __importDefault(require("../config"));
 const globalErrorHandler = (err, req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // Initialize default error details
     let statusCode = 500;

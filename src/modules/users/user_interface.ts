@@ -21,15 +21,15 @@ export interface UserModel extends Model<TUser> {
   isUserAlreadyExistsBy_id(_id: mongoose.Types.ObjectId): Promise<TUser>;
   isUserAlreadyExistsBy_email(email: string): Promise<TUser>;
   isUserBlockedOrDeletedFindBy_id(
-    _id: mongoose.Types.ObjectId
+    _id: mongoose.Types.ObjectId,
   ): Promise<TUser | null>;
   isPasswordMached(
     plainTextPassword: string,
-    hashedPassword: string
+    hashedPassword: string,
   ): Promise<boolean>;
 
   isJWTIssuedAtBeforePasswordChanged(
     passwordChangedTimestamp: Date,
-    jwtIssuedTimestamp: number
+    jwtIssuedTimestamp: number,
   ): boolean;
 }

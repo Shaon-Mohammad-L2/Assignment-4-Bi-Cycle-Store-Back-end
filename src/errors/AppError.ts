@@ -3,7 +3,7 @@ export default class AppError extends Error {
   constructor(
     public statusCode: number,
     message: string,
-    stack = ""
+    stack = "",
   ) {
     super(message);
     this.statusCode = statusCode;

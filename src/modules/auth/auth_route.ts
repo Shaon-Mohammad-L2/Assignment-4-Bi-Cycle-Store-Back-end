@@ -10,7 +10,7 @@ const router = express.Router();
 router.post(
   "/login",
   validateRequest(AuthValidation.loginValidationZodSchema),
-  AuthControllers.loginUser
+  AuthControllers.loginUser,
 );
 
 //user  password change.
@@ -18,35 +18,35 @@ router.post(
   "/change-password",
   auth("superAdmin", "admin", "user", "developer"),
   validateRequest(AuthValidation.changePasswordValidationZodSchema),
-  AuthControllers.changePassword
+  AuthControllers.changePassword,
 );
 
 // create user access token by refresh token.
 router.post(
   "/refresh-token",
   validateRequest(AuthValidation.refreshTokenCookiesValidationZodSchema),
-  AuthControllers.refreshToken
+  AuthControllers.refreshToken,
 );
 
 //user forgot password.
 router.post(
   "/forgot-password",
   validateRequest(AuthValidation.forgotPasswordValidationZodSchema),
-  AuthControllers.forgotPassword
+  AuthControllers.forgotPassword,
 );
 
 // veridy otp.
 router.post(
   "/verify-otp",
   validateRequest(AuthValidation.verifyOTPValidationZodSchema),
-  AuthControllers.verifyOTP
+  AuthControllers.verifyOTP,
 );
 
 // user reset password.
 router.post(
   "/reset-password",
   validateRequest(AuthValidation.resetPasswordValidationZodSchema),
-  AuthControllers.resetPassword
+  AuthControllers.resetPassword,
 );
 
 export const AuthRoutes = router;

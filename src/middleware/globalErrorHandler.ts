@@ -12,7 +12,7 @@ const globalErrorHandler = async (
   err: any,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   // Initialize default error details
   let statusCode: number = 500;

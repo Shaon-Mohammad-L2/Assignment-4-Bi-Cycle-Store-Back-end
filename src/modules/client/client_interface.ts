@@ -13,6 +13,6 @@ export type TClient = {
 export interface ClientModel extends Model<TClient> {
   isExistClientInDBFindBy_user(user: mongoose.Types.ObjectId): Promise<TClient>;
   isUserAndClientInformationFindBy_id(
-    _id: mongoose.Types.ObjectId
+    _id: mongoose.Types.ObjectId,
   ): Promise<TUser & TClient>;
 }

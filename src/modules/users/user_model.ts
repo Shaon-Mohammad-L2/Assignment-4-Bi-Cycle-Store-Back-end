@@ -45,7 +45,7 @@ const UserSchema = new mongoose.Schema<TUser, UserModel>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 //statics methods for user already Exists by _id / mongodb default _id
@@ -56,14 +56,14 @@ UserSchema.statics.isUserAlreadyExistsBy_id = async function (_id: string) {
 
 //statics methods for user already Exists by email
 UserSchema.statics.isUserAlreadyExistsBy_email = async function (
-  email: string
+  email: string,
 ) {
   const result = await User.findOne({ email }).select("+password");
   return result;
 };
 // statics methods for user blocked or deleted .
 UserSchema.statics.isUserBlockedOrDeletedFindBy_id = async function (
-  _id: string
+  _id: string,
 ) {
   const user = await User.findById(_id);
   if (!user) {
@@ -83,7 +83,7 @@ UserSchema.statics.isUserBlockedOrDeletedFindBy_id = async function (
 //statics methods for user password matched.
 UserSchema.statics.isPasswordMached = async function (
   plainTextPassword: string,
-  hashedPassword: string
+  hashedPassword: string,
 ) {
   return await bcrypt.compare(plainTextPassword, hashedPassword);
 };
@@ -91,7 +91,7 @@ UserSchema.statics.isPasswordMached = async function (
 //statics methods for user change password time.
 UserSchema.statics.isJWTIssuedAtBeforePasswordChanged = function (
   passwordChangedTimestamp: Date,
-  jwtIssuedTimestamp: number
+  jwtIssuedTimestamp: number,
 ) {
   const passwordChangedTime =
     new Date(passwordChangedTimestamp).getTime() / 1000;
@@ -106,7 +106,7 @@ UserSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
     this.password = await bcrypt.hash(
       this.password,
-      Number(config.bcrypt_salt_rounds)
+      Number(config.bcrypt_salt_rounds),
     );
   }
   next();

@@ -4,19 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const user_route_1 = require("../modules/users/user_route");
+const auth_route_1 = require("../modules/auth/auth_route");
 const routers = express_1.default.Router();
-const authRouter = routers.get("/", (req, res) => {
-    res.status(200).json({
-        server: "Active",
-        success: true,
-        stutas: 200,
-        message: "Routes.",
-    });
-});
 const moduleRoutes = [
     {
         path: "/auth",
-        route: authRouter,
+        route: auth_route_1.AuthRoutes,
+    },
+    {
+        path: "/users",
+        route: user_route_1.UserRoutes,
     },
 ];
 moduleRoutes.forEach((route) => {

@@ -36,5 +36,5 @@ const PasswordResetSchema = new mongoose.Schema<TPasswordReset>({
 
 export const PasswordReset = mongoose.model<TPasswordReset>(
   "PasswordReset",
-  PasswordResetSchema
+  PasswordResetSchema,
 );

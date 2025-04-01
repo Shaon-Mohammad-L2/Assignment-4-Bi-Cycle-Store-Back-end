@@ -19,7 +19,7 @@ const auth = (...requiredRole: TUserRole[]) => {
     // check if the token is valid.
     const decoded = verifyToken(
       token,
-      config.jwt_access_token_secret as string
+      config.jwt_access_token_secret as string,
     );
 
     const { user_id, role, iat } = decoded;
@@ -51,7 +51,7 @@ const auth = (...requiredRole: TUserRole[]) => {
     if (user.passwordChangedAt) {
       const isPasswordChanged = User.isJWTIssuedAtBeforePasswordChanged(
         user.passwordChangedAt,
-        iat as number
+        iat as number,
       );
       if (isPasswordChanged) {
         throw new AppError(401, "You are not authorized!");

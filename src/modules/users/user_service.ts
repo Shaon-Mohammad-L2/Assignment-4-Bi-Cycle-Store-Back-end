@@ -53,14 +53,14 @@ const createUserIntoDB = async (payload: TUser & Pick<TClient, "name">) => {
     const accessToken = createToken(
       jwtPayload,
       config.jwt_access_token_secret as string,
-      config.jwt_access_token_expires_in as string
+      config.jwt_access_token_expires_in as string,
     );
 
     //create a refresh token
     const refreshToken = createToken(
       jwtPayload,
       config.jwt_refresh_token_secret as string,
-      config.jwt_refresh_token_expires_in as string
+      config.jwt_refresh_token_expires_in as string,
     );
 
     //return access and refresh token.

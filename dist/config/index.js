@@ -16,4 +16,8 @@ exports.default = {
     jwt_refresh_token_secret: process.env.JWT_REFRESH_TOKEN_SECRET,
     jwt_access_token_expires_in: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN,
     jwt_refresh_token_expires_in: process.env.JWT_REFRESH_TOKEN_EXPIRES_IN,
+    email_host_provider_name: process.env.EMAIL_HOST_PROVIDER_NAME,
+    email_host_provider_port: process.env.EMAIL_HOST_PROVIDER_PORT,
+    email_sender_email: process.env.EMAIL_SENDER_EMAIL,
+    email_sender_email_app_pass: process.env.EMAIL_SENDER_EMAIL_APP_PASS,
 };

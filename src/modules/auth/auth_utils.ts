@@ -6,7 +6,7 @@ import { TJwtPayload } from "./auth_interface";
 export const createToken = (
   jwtPayload: TJwtPayload,
   jwtSecret: Secret,
-  expiresIn: string
+  expiresIn: string,
 ): string => {
   const options: SignOptions = {
     expiresIn: expiresIn as SignOptions["expiresIn"],
