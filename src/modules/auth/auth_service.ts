@@ -286,9 +286,60 @@ const forgotPassword = async (payload: { email: string }) => {
   };
 };
 
+// verify OTP
+const verifyOTP = async (payload: { email: string; otp: string }) => {
+  // checking this user exists in database.
+  const passwordResetModel = await PasswordReset.findOne({
+    email: payload.email,
+  });
+  if (!passwordResetModel) {
+    throw new AppError(404, "Email not found.");
+  }
+
+  // Check if the OTP has expired
+  if (
+    passwordResetModel.resetPasswordOTPExpires &&
+    passwordResetModel.resetPasswordOTPExpires < new Date()
+  ) {
+    throw new AppError(400, "OTP has expired.");
+  }
+
+  // Check if the user is blocked due to too many invalid attempts
+  if (
+    passwordResetModel.otpLockUntil &&
+    passwordResetModel.otpLockUntil > new Date()
+  ) {
+    throw new AppError(
+      429,
+      "Too many invalid OTP attempts. Please try again after 1 hour."
+    );
+  }
+
+  // Validate the OTP
+  if (passwordResetModel.resetPasswordOTP !== payload.otp) {
+    // Increment invalid OTP attempts
+    passwordResetModel.invalidOtpAttempts =
+      (passwordResetModel.invalidOtpAttempts || 0) + 1;
+
+    // Lock the user for 1 hour if they exceed 10 invalid attempts
+    if (passwordResetModel.invalidOtpAttempts >= 6) {
+      passwordResetModel.otpLockUntil = new Date(Date.now() + 60 * 60 * 1000); // 1-hour lock
+      passwordResetModel.invalidOtpAttempts = 0; // Reset invalid attempts after lock
+    }
+
+    await passwordResetModel.save();
+    throw new AppError(400, "Invalid OTP.");
+  }
+
+  // OTP is valid, mark it as verified and reset invalid attempt counters
+  passwordResetModel.isOTPVerified = true;
+  await passwordResetModel.save();
+  return;
+};
 export const AuthServices = {
   loginUser,
   changePasswordIntoDB,
   refreshToken,
   forgotPassword,
+  verifyOTP,
 };

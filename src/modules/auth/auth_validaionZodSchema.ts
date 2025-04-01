@@ -63,9 +63,24 @@ const forgotPasswordValidationZodSchema = z.object({
       .email("Invalid Email Format!"),
   }),
 });
+
+const verifyOTPValidationZodSchema = z.object({
+  body: z.object({
+    email: z
+      .string({ required_error: "Email is required!" })
+      .email("Invalid Email Format!"),
+
+    otp: z
+      .string({ required_error: "OTP is required!" })
+      .length(6, { message: "OTP must be exactly 6 digits!" })
+      .regex(/^\d+$/, "OTP must contain only numeric characters!"),
+  }),
+});
+
 export const AuthValidation = {
   loginValidationZodSchema,
   changePasswordValidationZodSchema,
   refreshTokenCookiesValidationZodSchema,
   forgotPasswordValidationZodSchema,
+  verifyOTPValidationZodSchema,
 };

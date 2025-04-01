@@ -77,9 +77,21 @@ const forgotPassword = catchAsync(async (req, res) => {
   });
 });
 
+// user verifyOTP
+const verifyOTP = catchAsync(async (req, res) => {
+  const result = await AuthServices.verifyOTP(req.body);
+  sendResponse(res, {
+    status: 200,
+    success: true,
+    message: "OTP verified successfully!",
+    data: result,
+  });
+});
+
 export const AuthControllers = {
   loginUser,
   changePassword,
   refreshToken,
   forgotPassword,
+  verifyOTP,
 };

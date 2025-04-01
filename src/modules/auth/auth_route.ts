@@ -35,4 +35,11 @@ router.post(
   AuthControllers.forgotPassword
 );
 
+// veridy otp.
+router.post(
+  "/verify-otp",
+  validateRequest(AuthValidation.verifyOTPValidationZodSchema),
+  AuthControllers.verifyOTP
+);
+
 export const AuthRoutes = router;
