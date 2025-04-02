@@ -18,6 +18,24 @@ const createProduct = catchAsync(async (req, res) => {
   });
 });
 
+// update product.
+const updateProduct = catchAsync(async (req, res) => {
+  const result = await ProductServices.updateProductIntoDB(
+    req.user,
+    req.params.id,
+    req.files,
+    req.body
+  );
+
+  sendResponse(res, {
+    status: 200,
+    success: true,
+    message: "Product updated successfully",
+    data: result,
+  });
+});
+
 export const ProdcutControllers = {
   createProduct,
+  updateProduct,
 };

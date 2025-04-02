@@ -17,4 +17,13 @@ router.post(
   ProdcutControllers.createProduct
 );
 
+// product update.
+router.put(
+  "/:id/update",
+  auth("admin"),
+  handleMultipleFileUpload,
+  formDataToSetJSONformatData,
+  validateRequest(ProductValidation.updateProductValidationZodSchema),
+  ProdcutControllers.updateProduct
+);
 export const ProductRoutes = router;

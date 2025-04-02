@@ -58,9 +58,6 @@ export const handleMultipleFileUpload = (
       }
 
       try {
-        if (!files || !files.images || files.images.length === 0) {
-          throw new AppError(400, "At least one image file is required.");
-        }
         // 1) Validate MIME types
         if (
           files.images &&
