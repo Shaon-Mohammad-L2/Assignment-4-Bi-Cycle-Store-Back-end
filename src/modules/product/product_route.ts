@@ -26,4 +26,11 @@ router.put(
   validateRequest(ProductValidation.updateProductValidationZodSchema),
   ProdcutControllers.updateProduct
 );
+
+// fetch all products for admin.
+router.get(
+  "/me",
+  auth("admin", "developer", "superAdmin"),
+  ProdcutControllers.getAllProductsForAdmin
+);
 export const ProductRoutes = router;

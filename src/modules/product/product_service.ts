@@ -77,7 +77,7 @@ const createProductIntoDB = async (
 };
 
 // update product into db.
-export const updateProductIntoDB = async (
+const updateProductIntoDB = async (
   user: JwtPayload,
   productId: string,
   files: any,
@@ -230,7 +230,16 @@ export const updateProductIntoDB = async (
 
   return updatedProduct;
 };
+
+// fetch all product from db for admin..
+const fetchAllProductsForAdminFromDB = async (
+  user: JwtPayload,
+  query: Record<string, unknown>
+) => {
+  await Client.isUserAndClientInformationFindBy_id(user.user_id);
+};
 export const ProductServices = {
   createProductIntoDB,
   updateProductIntoDB,
+  fetchAllProductsForAdminFromDB,
 };
