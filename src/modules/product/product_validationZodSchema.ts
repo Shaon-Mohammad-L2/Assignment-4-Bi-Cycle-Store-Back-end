@@ -10,7 +10,8 @@ const productTagsSchema = z
       required_error: "Tags must be an array of strings.",
     }
   )
-  .nonempty("Tags cannot be empty!");
+  .nonempty("Tags cannot be empty!")
+  .max(30, { message: "Tags cannot exceed 30 items!" });
 
 const createProductValidationZodSchema = z.object({
   body: z.object({
@@ -41,9 +42,16 @@ const createProductValidationZodSchema = z.object({
 
     model: z
       .string()
+      .min(2, "Model name must be at least 2 characters long.")
       .max(50, "Model name cannot exceed 50 characters.")
       .optional(),
 
+    costing: z
+      .string({ required_error: "Costing is required." })
+      .regex(
+        /^\d+(\.\d{1,2})?$/,
+        "Costing must be a valid number in string format (e.g., '99.99')."
+      ),
     price: z
       .string({ required_error: "Price is required." })
       .regex(
@@ -57,9 +65,9 @@ const createProductValidationZodSchema = z.object({
       .nonnegative("Stock cannot be negative."),
 
     code: z
-      .string()
-      .max(20, "Product code cannot exceed 20 characters.")
-      .optional(),
+      .string({ required_error: "Product code is required!" })
+      .min(2, "code must be at least 2 characters long.")
+      .max(20, "Product code cannot exceed 20 characters."),
 
     isActive: z.boolean().default(true).optional(),
 
@@ -69,12 +77,6 @@ const createProductValidationZodSchema = z.object({
         /^\d+(\.\d{1,2})?$/,
         "Discount price must be a valid number in string format (e.g., '49.99')."
       )
-      .optional(),
-
-    ratings: z
-      .number()
-      .min(0, "Ratings must be at least 0.")
-      .max(5, "Ratings cannot be more than 5.")
       .optional(),
 
     tags: productTagsSchema.optional(),

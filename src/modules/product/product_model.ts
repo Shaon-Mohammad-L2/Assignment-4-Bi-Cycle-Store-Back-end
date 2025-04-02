@@ -31,6 +31,11 @@ const ProductSchema = new mongoose.Schema<TProduct>(
       type: String,
       trim: true,
     },
+    costing: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     price: {
       type: String,
       required: true,
@@ -43,6 +48,10 @@ const ProductSchema = new mongoose.Schema<TProduct>(
     stock: {
       type: Number,
       required: true,
+      default: 0,
+    },
+    sold: {
+      type: Number,
       default: 0,
     },
     ratings: {

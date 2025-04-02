@@ -17,4 +17,7 @@ export default {
   email_host_provider_port: process.env.EMAIL_HOST_PROVIDER_PORT,
   email_sender_email: process.env.EMAIL_SENDER_EMAIL,
   email_sender_email_app_pass: process.env.EMAIL_SENDER_EMAIL_APP_PASS,
+  cloudinary_cloud_name: process.env.CLOUDINARY_CLOUDE_NAME,
+  cloudinary_api_key: process.env.CLOUDINARY_API_KEY,
+  cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET,
 };

@@ -8,10 +8,12 @@ export type TProduct = {
   category?: Types.ObjectId | null;
   brand?: string;
   images: TImageAsset[];
+  costing: string;
   price: string;
   currency?: "BDT";
   model?: string;
   stock: number;
+  sold: number;
   code?: string;
   discountPrice?: string;
   ratings?: number;
