@@ -5,7 +5,7 @@ const unlinkAsync = util.promisify(fs.unlink);
 
 export const removeUploadedFiles = async (files: any) => {
   await Promise.all(
-    ["productImages", "variantsImages", "productVideo"].flatMap((field) =>
+    ["images", "videos"].flatMap((field) =>
       files[field]
         ? files[field].map((file: Express.Multer.File) =>
             unlinkAsync(file.path).catch((err) => {

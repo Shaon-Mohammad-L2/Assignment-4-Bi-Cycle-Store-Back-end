@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { TProduct } from "./product_interface";
-import { ImageSchema } from "../../schema/file_Schema";
+import { ImageSchema, VideoSchema } from "../../schema/file_Schema";
 
 const ProductSchema = new mongoose.Schema<TProduct>(
   {
@@ -26,6 +26,10 @@ const ProductSchema = new mongoose.Schema<TProduct>(
       type: [ImageSchema],
       default: [],
       required: true,
+    },
+    video: {
+      type: [VideoSchema],
+      default: [],
     },
     model: {
       type: String,

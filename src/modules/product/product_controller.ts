@@ -4,7 +4,11 @@ import { ProductServices } from "./product_service";
 
 // create product.
 const createProduct = catchAsync(async (req, res) => {
-  const result = await ProductServices.createProductIntoDB(req.files, req.body);
+  const result = await ProductServices.createProductIntoDB(
+    req.user,
+    req.files,
+    req.body
+  );
 
   sendResponse(res, {
     status: 200,

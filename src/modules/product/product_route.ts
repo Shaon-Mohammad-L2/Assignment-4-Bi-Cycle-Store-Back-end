@@ -10,7 +10,7 @@ const router = express.Router();
 // create product.
 router.post(
   "/create",
-  auth("user"),
+  auth("admin"),
   handleMultipleFileUpload,
   formDataToSetJSONformatData,
   validateRequest(ProductValidation.createProductValidationZodSchema),

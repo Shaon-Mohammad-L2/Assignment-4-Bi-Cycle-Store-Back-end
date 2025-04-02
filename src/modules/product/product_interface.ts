@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { TImageAsset } from "../../interface/imageAsset";
+import { TImageAsset, TVideoAsset } from "../../interface/imageAsset";
 
 export type TProduct = {
   _id?: Types.ObjectId;
@@ -8,6 +8,7 @@ export type TProduct = {
   category?: Types.ObjectId | null;
   brand?: string;
   images: TImageAsset[];
+  video?: TVideoAsset[];
   costing: string;
   price: string;
   currency?: "BDT";
