@@ -1,8 +1,9 @@
 import { TProduct } from "./product_interface";
 
 // create product into db.
-const createProductIntoDB = async (payload: TProduct) => {
+const createProductIntoDB = async (files: any, payload: TProduct) => {
   console.log(payload);
+  console.log(files);
 };
 
 export const ProductServices = {

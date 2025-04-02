@@ -7,12 +7,16 @@ import handleMongooseCastError from "../errors/handleMongooseCastError";
 import handleMongooseDuplicateError from "../errors/handleMongooseDuplicateError";
 import AppError from "../errors/AppError";
 import config from "../config";
+import {
+  removeSingleUploadedFile,
+  removeUploadedFiles,
+} from "../utils/removeUploadedFiles";
 
 const globalErrorHandler = async (
   err: any,
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   // Initialize default error details
   let statusCode: number = 500;
@@ -78,6 +82,13 @@ const globalErrorHandler = async (
         message: err?.message,
       },
     ];
+  }
+
+  if (req.files) {
+    await removeUploadedFiles(req.files);
+  }
+  if (req.file) {
+    await removeSingleUploadedFile(req.file.path);
   }
 
   return res.status(statusCode).json({
