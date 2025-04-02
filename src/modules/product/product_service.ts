@@ -1,8 +1,10 @@
+import QueryBuilder from "../../builder/QueryBuilder";
 import AppError from "../../errors/AppError";
 import { TImageAsset, TVideoAsset } from "../../interface/imageAsset";
 import { deleteImageFromCloudinary } from "../../utils/deleteImageFromCloudinary";
 import { sendImageToCloudinary } from "../../utils/sendImageToCloudinary";
 import { Client } from "../client/client_model";
+import { productSearchableFields } from "./product_constant";
 import { TProduct } from "./product_interface";
 import { Product } from "./product_model";
 import { JwtPayload } from "jsonwebtoken";
@@ -237,6 +239,17 @@ const fetchAllProductsForAdminFromDB = async (
   query: Record<string, unknown>
 ) => {
   await Client.isUserAndClientInformationFindBy_id(user.user_id);
+
+  const productQuery = new QueryBuilder(Product.find(), query)
+    .search(productSearchableFields)
+    .sort()
+    .fields()
+    .filter();
+
+  const result = await productQuery.modelQuery;
+  const meta = await productQuery.countTotal();
+
+  return { result, meta };
 };
 export const ProductServices = {
   createProductIntoDB,

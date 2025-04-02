@@ -46,7 +46,8 @@ const getAllProductsForAdmin = catchAsync(async (req, res) => {
     status: 200,
     success: true,
     message: "Products retrived successfully",
-    data: result,
+    data: result.result,
+    meta: result.meta,
   });
 });
 
