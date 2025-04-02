@@ -251,8 +251,28 @@ const fetchAllProductsForAdminFromDB = async (
 
   return { result, meta };
 };
+
+// fetch all product from db for admin..
+const fetchAllProductsFromDB = async (query: Record<string, unknown>) => {
+  const productQuery = new QueryBuilder(
+    Product.find({ isActive: { $ne: false } }).select(
+      "-costing -isActive -isDeleted -updatedAt"
+    ),
+    query
+  )
+    .search(productSearchableFields)
+    .sort()
+    .fields()
+    .filter();
+
+  const result = await productQuery.modelQuery;
+  const meta = await productQuery.countTotal();
+
+  return { result, meta };
+};
 export const ProductServices = {
   createProductIntoDB,
   updateProductIntoDB,
   fetchAllProductsForAdminFromDB,
+  fetchAllProductsFromDB,
 };

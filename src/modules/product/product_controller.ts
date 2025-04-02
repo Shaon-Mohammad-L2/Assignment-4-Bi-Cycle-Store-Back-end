@@ -51,8 +51,22 @@ const getAllProductsForAdmin = catchAsync(async (req, res) => {
   });
 });
 
+// Fetch all product
+const getAllProducts = catchAsync(async (req, res) => {
+  const result = await ProductServices.fetchAllProductsFromDB(req.query);
+
+  sendResponse(res, {
+    status: 200,
+    success: true,
+    message: "Products retrived successfully",
+    data: result.result,
+    meta: result.meta,
+  });
+});
+
 export const ProdcutControllers = {
   createProduct,
   updateProduct,
   getAllProductsForAdmin,
+  getAllProducts,
 };

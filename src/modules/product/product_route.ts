@@ -33,4 +33,7 @@ router.get(
   auth("admin", "developer", "superAdmin"),
   ProdcutControllers.getAllProductsForAdmin
 );
+
+// fetch all products
+router.get("/", ProdcutControllers.getAllProducts);
 export const ProductRoutes = router;
