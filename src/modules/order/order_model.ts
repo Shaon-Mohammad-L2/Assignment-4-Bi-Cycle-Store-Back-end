@@ -1,9 +1,28 @@
 import mongoose from "mongoose";
-import { TOrder } from "./order_interface";
+import { TOrder, TOrderProducts } from "./order_interface";
 import { deliveryStatus, status } from "./order_constants";
+
+const OrderProductSchema = new mongoose.Schema<TOrderProducts>(
+  {
+    productId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: [true, "Product id is required"],
+    },
+    quantity: {
+      type: Number,
+      required: [true, "Product quantity is required"],
+    },
+  },
+  { _id: false }
+);
 
 const OrderSchema = new mongoose.Schema<TOrder>(
   {
+    orderID: {
+      type: String,
+      trim: true,
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Client",
@@ -35,6 +54,11 @@ const OrderSchema = new mongoose.Schema<TOrder>(
       required: [true, "Total Amount is required!"],
       default: 0,
     },
+    totalQuantity: {
+      type: Number,
+      required: [true, "Total Quantity is required!"],
+      default: 0,
+    },
     paid: {
       type: Number,
       required: [true, "Paid Amount is required!"],
@@ -45,8 +69,13 @@ const OrderSchema = new mongoose.Schema<TOrder>(
       required: [true, "Due Amount is required!"],
       default: 0,
     },
+    currency: {
+      type: String,
+      enum: ["BDT"],
+      default: "BDT",
+    },
     products: {
-      type: [{ productId: mongoose.Schema.Types.ObjectId, quantity: Number }],
+      type: [OrderProductSchema],
       required: [true, "Product is required"],
     },
     transactionId: {

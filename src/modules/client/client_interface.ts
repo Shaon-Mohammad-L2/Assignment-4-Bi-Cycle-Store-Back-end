@@ -7,12 +7,13 @@ export type TClient = {
   name?: string;
   phone?: string;
   picture?: string;
+  location?: string;
 };
 
 // create interface.
 export interface ClientModel extends Model<TClient> {
   isExistClientInDBFindBy_user(user: mongoose.Types.ObjectId): Promise<TClient>;
   isUserAndClientInformationFindBy_id(
-    _id: mongoose.Types.ObjectId,
-  ): Promise<TUser & TClient>;
+    _id: mongoose.Types.ObjectId
+  ): Promise<{ userInfo: TUser; client: TClient }>;
 }

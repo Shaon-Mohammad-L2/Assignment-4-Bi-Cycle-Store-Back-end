@@ -1,12 +1,13 @@
 import { Types } from "mongoose";
 
-type TOrderProducts = {
+export type TOrderProducts = {
   productId: Types.ObjectId;
   quantity: number;
 };
 
 export type TOrder = {
   _id?: Types.ObjectId;
+  orderID: string;
   user: Types.ObjectId;
   email: string;
   name: string;
@@ -16,6 +17,8 @@ export type TOrder = {
   paid: number;
   due: number;
   totalAmount: number;
+  totalQuantity: number;
+  currency: "BDT";
   products: TOrderProducts[];
   transactionId?: string | null;
   transaction?: Types.ObjectId | null;

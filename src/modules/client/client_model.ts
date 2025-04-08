@@ -25,26 +25,29 @@ const ClientSchema = new mongoose.Schema<TClient, ClientModel>(
     picture: {
       type: String,
     },
+    location: {
+      type: String,
+    },
   },
   {
     timestamps: true,
-  },
+  }
 );
 // statics method for search client in db.
 ClientSchema.statics.isExistClientInDBFindBy_user = async function (
-  user: string,
+  user: string
 ) {
   return await Client.findOne({ user });
 };
 // user and client information.
 ClientSchema.statics.isUserAndClientInformationFindBy_id = async function (
-  _id: Types.ObjectId,
+  _id: Types.ObjectId
 ) {
   const user = await User.isUserBlockedOrDeletedFindBy_id(_id);
   const client = await Client.findById(_id);
-  return { user, client };
+  return { userInfo: user, client };
 };
 export const Client = mongoose.model<TClient, ClientModel>(
   "Client",
-  ClientSchema,
+  ClientSchema
 );
