@@ -11,4 +11,14 @@ const successPayment = catchAsync(async (req, res) => {
   return res.redirect(302, result);
 });
 
-export const PaymentControllers = { successPayment };
+// success paymnent.
+const failedPayment = catchAsync(async (req, res) => {
+  const result = await PaymentServices.failedPayment(
+    req.cookies.refreshToken,
+    req.body
+  );
+
+  return res.redirect(302, result!);
+});
+
+export const PaymentControllers = { successPayment, failedPayment };

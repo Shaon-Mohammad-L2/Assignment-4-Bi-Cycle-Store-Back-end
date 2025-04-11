@@ -5,6 +5,7 @@ import AppError from "../../errors/AppError";
 import mongoose from "mongoose";
 import { Order } from "../order/order_model";
 import { Transaction } from "../transaction/transaction_model";
+import { Product } from "../product/product_model";
 
 // ---------------------------------------------------------
 // ---------------For SSL Commerz Payment-------------------
@@ -13,6 +14,10 @@ import { Transaction } from "../transaction/transaction_model";
 const store_id = config.sslCommerz_store_id as string;
 const store_passwd = config.sslCommerz_store_password as string;
 const is_live = false;
+
+// ---------------------------------------------------------
+// success payment
+// ---------------------------------------------------------
 const successPayment = async (cookieToken: string, sslPayload: TSslPayload) => {
   if (sslPayload.status !== "VALID") {
     throw new AppError(400, "Payment not valid");
@@ -79,4 +84,33 @@ const successPayment = async (cookieToken: string, sslPayload: TSslPayload) => {
   return redirectUrl;
 };
 
-export const PaymentServices = { successPayment };
+// ---------------------------------------------------------
+// failed payment
+// ---------------------------------------------------------
+const failedPayment = async (cookieToken: string, sslPayload: TSslPayload) => {
+  if (sslPayload.status === "FAILED") {
+    const session = await mongoose.startSession();
+    await session.withTransaction(async () => {
+      const order = await Order.findOne({ transactionId: sslPayload.tran_id })
+        .select("products transaction")
+        .session(session)
+        .orFail(new AppError(404, "Order not found"));
+
+      const ops = order.products.map((p) => ({
+        updateOne: {
+          filter: { _id: p.productId },
+          update: { $inc: { stock: p.quantity } },
+        },
+      }));
+      await Product.bulkWrite(ops, { session });
+
+      await Transaction.findByIdAndDelete(order.transaction, { session });
+
+      await order.deleteOne({ session });
+    });
+
+    const redirectUrl = `${config.payment_fail_client_url}?refundAmount=${sslPayload.amount}`;
+    return redirectUrl;
+  }
+};
+export const PaymentServices = { successPayment, failedPayment };
