@@ -14,16 +14,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaymentControllers = void 0;
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
-const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const payment_service_1 = require("./payment_service");
 // success paymnent.
 const successPayment = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield payment_service_1.PaymentServices.successPayment(req.body);
-    (0, sendResponse_1.default)(res, {
-        status: 200,
-        success: true,
-        message: "Payment recived Successfully!",
-        data: result,
-    });
+    const result = yield payment_service_1.PaymentServices.successPayment(req.cookies.refreshToken, req.body);
+    return res.redirect(302, result);
 }));
-exports.PaymentControllers = { successPayment };
+// failed paymnent.
+const failedPayment = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield payment_service_1.PaymentServices.failedPayment(req.cookies.refreshToken, req.body);
+    return res.redirect(302, result);
+}));
+// canceled paymnent.
+const canceledPayment = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield payment_service_1.PaymentServices.canceledPayment(req.cookies.refreshToken, req.body);
+    return res.redirect(302, result);
+}));
+exports.PaymentControllers = {
+    successPayment,
+    failedPayment,
+    canceledPayment,
+};

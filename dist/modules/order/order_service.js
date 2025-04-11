@@ -167,7 +167,7 @@ const createOrderIntoDB = (user, payload) => __awaiter(void 0, void 0, void 0, f
                 }
                 catch (err) {
                     yield session1.abortTransaction();
-                    throw new AppError_1.default(500, "", "Order creation failed! Please try again.");
+                    throw new AppError_1.default(500, "Order creation failed! Please try again.");
                 }
                 finally {
                     yield session1.endSession();
@@ -179,7 +179,7 @@ const createOrderIntoDB = (user, payload) => __awaiter(void 0, void 0, void 0, f
             }
         }
         catch (err) {
-            throw new AppError_1.default(500, "", "Payment gateway error! Please try again.");
+            throw new AppError_1.default(500, "Payment gateway error! Please try again.");
         }
     }
     else {
@@ -203,7 +203,7 @@ const createOrderIntoDB = (user, payload) => __awaiter(void 0, void 0, void 0, f
         }
         catch (err) {
             yield session2.abortTransaction();
-            throw new AppError_1.default(500, "", "Order creation failed! Please try again.");
+            throw new AppError_1.default(500, "Order creation failed! Please try again.");
         }
         finally {
             yield session2.endSession();

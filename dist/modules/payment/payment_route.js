@@ -8,4 +8,6 @@ const express_1 = __importDefault(require("express"));
 const payment_controller_1 = require("./payment_controller");
 const router = express_1.default.Router();
 router.post("/success", payment_controller_1.PaymentControllers.successPayment);
+router.post("/fail", payment_controller_1.PaymentControllers.failedPayment);
+router.post("/cancel", payment_controller_1.PaymentControllers.canceledPayment);
 exports.PaymentRoutes = router;
