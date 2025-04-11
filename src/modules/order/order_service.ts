@@ -151,11 +151,7 @@ const createOrderIntoDB = async (user: JwtPayload, payload: TOrder) => {
           await session1.commitTransaction();
         } catch (err) {
           await session1.abortTransaction();
-          throw new AppError(
-            500,
-            "",
-            "Order creation failed! Please try again."
-          );
+          throw new AppError(500, "Order creation failed! Please try again.");
         } finally {
           await session1.endSession();
         }
@@ -166,7 +162,7 @@ const createOrderIntoDB = async (user: JwtPayload, payload: TOrder) => {
         };
       }
     } catch (err) {
-      throw new AppError(500, "", "Payment gateway error! Please try again.");
+      throw new AppError(500, "Payment gateway error! Please try again.");
     }
   } else {
     payload.status = "success";
@@ -193,7 +189,7 @@ const createOrderIntoDB = async (user: JwtPayload, payload: TOrder) => {
       return order;
     } catch (err) {
       await session2.abortTransaction();
-      throw new AppError(500, "", "Order creation failed! Please try again.");
+      throw new AppError(500, "Order creation failed! Please try again.");
     } finally {
       await session2.endSession();
     }

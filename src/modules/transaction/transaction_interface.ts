@@ -37,5 +37,22 @@ export type TTransaction = {
     | "return"
     | "delivered";
   card_brand: string;
+  amount: string;
+  store_amount: string;
+  card_no: string;
+  error: string;
+  card_issuer_country_code: string;
+  store_id: string;
+  verify_sign_sha2: string;
+  currency_type: string;
+  currency_rate: string;
+  base_fair: string;
+  value_a: string;
+  value_b: string;
+  value_c: string;
+  value_d: string;
+  subscription_id: string;
+  risk_level: string;
+  card_ref_id: string;
   isDeleted: boolean;
 };

@@ -25,4 +25,7 @@ export default {
   sslCommerz_payment_success_url: process.env.SSLCOMMERZ_SUCCESS_URL,
   sslCommerz_payment_cancel_url: process.env.SSLCOMMERZ_CANCEL_URL,
   sslCommerz_payment_fail_url: process.env.SSLCOMMERZ_FAIL_URL,
+  payment_success_client_url: process.env.PAYMENT_SUCCESS_CLIENT_URL,
+  payment_fail_client_url: process.env.PAYMENT_FAIL_CLIENT_URL,
+  payment_cancel_client_url: process.env.PAYMENT_CANCEL_CLIENT_URL,
 };
