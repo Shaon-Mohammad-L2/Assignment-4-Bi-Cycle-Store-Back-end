@@ -5,20 +5,34 @@ import { PaymentServices } from "./payment_service";
 const successPayment = catchAsync(async (req, res) => {
   const result = await PaymentServices.successPayment(
     req.cookies.refreshToken,
-    req.body
+    req.body,
   );
 
   return res.redirect(302, result);
 });
 
-// success paymnent.
+// failed paymnent.
 const failedPayment = catchAsync(async (req, res) => {
   const result = await PaymentServices.failedPayment(
     req.cookies.refreshToken,
-    req.body
+    req.body,
   );
 
   return res.redirect(302, result!);
 });
 
-export const PaymentControllers = { successPayment, failedPayment };
+// canceled paymnent.
+const canceledPayment = catchAsync(async (req, res) => {
+  const result = await PaymentServices.canceledPayment(
+    req.cookies.refreshToken,
+    req.body,
+  );
+
+  return res.redirect(302, result!);
+});
+
+export const PaymentControllers = {
+  successPayment,
+  failedPayment,
+  canceledPayment,
+};

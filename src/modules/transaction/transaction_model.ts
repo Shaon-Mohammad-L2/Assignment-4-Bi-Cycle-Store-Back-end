@@ -81,10 +81,10 @@ const TransactionSchema = new mongoose.Schema<TTransaction>(
 
     isDeleted: { type: Boolean, default: false },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Transaction = mongoose.model<TTransaction>(
   "Transaction",
-  TransactionSchema
+  TransactionSchema,
 );

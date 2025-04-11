@@ -71,7 +71,7 @@ const successPayment = async (cookieToken: string, sslPayload: TSslPayload) => {
         risk_title: sslValidateResponseData.risk_title,
         risk_level: sslValidateResponseData.risk_level,
       },
-      { new: true, session }
+      { new: true, session },
     ).orFail(new AppError(404, "Transaction history not found"));
 
     redirectUrl = `${config.payment_success_client_url}?paid-amount=${sslValidateResponseData.amount}&TxID=${sslValidateResponseData.tran_id}`;
@@ -113,4 +113,38 @@ const failedPayment = async (cookieToken: string, sslPayload: TSslPayload) => {
     return redirectUrl;
   }
 };
-export const PaymentServices = { successPayment, failedPayment };
+
+const canceledPayment = async (
+  cookieToken: string,
+  sslPayload: TSslPayload,
+) => {
+  if (sslPayload.status === "CANCELLED") {
+    const session = await mongoose.startSession();
+    await session.withTransaction(async () => {
+      const order = await Order.findOne({ transactionId: sslPayload.tran_id })
+        .select("products transaction")
+        .session(session)
+        .orFail(new AppError(404, "Order not found"));
+
+      const ops = order.products.map((p) => ({
+        updateOne: {
+          filter: { _id: p.productId },
+          update: { $inc: { stock: p.quantity } },
+        },
+      }));
+      await Product.bulkWrite(ops, { session });
+
+      await Transaction.findByIdAndDelete(order.transaction, { session });
+
+      await order.deleteOne({ session });
+    });
+
+    const redirectUrl = `${config.payment_cancel_client_url}?refundAmount=${sslPayload.amount}`;
+    return redirectUrl;
+  }
+};
+export const PaymentServices = {
+  successPayment,
+  failedPayment,
+  canceledPayment,
+};

@@ -8,7 +8,7 @@ declare module "sslcommerz-lts" {
     new (
       storeId: string,
       storePassword: string,
-      isLive: boolean
+      isLive: boolean,
     ): SSLCommerzPaymentOptions;
   }
 
