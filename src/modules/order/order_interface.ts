@@ -19,6 +19,7 @@ export type TOrder = {
   totalAmount: number;
   totalQuantity: number;
   currency: "BDT";
+  payment: "Paid" | "Unpaid";
   products: TOrderProducts[];
   transactionId?: string | null;
   transaction?: Types.ObjectId | null;

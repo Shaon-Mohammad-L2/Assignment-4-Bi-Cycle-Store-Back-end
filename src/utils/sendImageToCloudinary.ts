@@ -17,7 +17,7 @@ cloudinary.config({
 export const sendImageToCloudinary = async (
   fileName: string,
   path: string,
-  resource_type: "image" | "video" = "image"
+  resource_type: "image" | "video" = "image",
 ): Promise<Record<string, unknown>> => {
   const uniqueNumber = generateOTP();
   // Upload an image

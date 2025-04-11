@@ -8,7 +8,7 @@ const orderProductSchema = z.object({
     })
     .regex(
       /^[0-9a-fA-F]{24}$/,
-      "Invalid Product ID format. Must be a valid MongoDB ObjectId."
+      "Invalid Product ID format. Must be a valid MongoDB ObjectId.",
     ),
   quantity: z
     .number({ required_error: "Product quantity is required." })

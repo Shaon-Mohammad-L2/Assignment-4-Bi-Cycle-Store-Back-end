@@ -14,7 +14,7 @@ const OrderProductSchema = new mongoose.Schema<TOrderProducts>(
       required: [true, "Product quantity is required"],
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const OrderSchema = new mongoose.Schema<TOrder>(
@@ -92,6 +92,11 @@ const OrderSchema = new mongoose.Schema<TOrder>(
       type: Boolean,
       default: false,
     },
+    payment: {
+      type: String,
+      enum: ["Paid", "Unpaid"],
+      default: "Unpaid",
+    },
     status: {
       type: String,
       enum: status,
@@ -109,7 +114,7 @@ const OrderSchema = new mongoose.Schema<TOrder>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export const Order = mongoose.model<TOrder>("Order", OrderSchema);

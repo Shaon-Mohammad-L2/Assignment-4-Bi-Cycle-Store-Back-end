@@ -13,7 +13,7 @@ import { JwtPayload } from "jsonwebtoken";
 const createProductIntoDB = async (
   user: JwtPayload,
   files: any,
-  payload: TProduct
+  payload: TProduct,
 ) => {
   if (!files || !files.images || files.images.length === 0) {
     throw new AppError(400, "At least one image file is required.");
@@ -59,7 +59,7 @@ const createProductIntoDB = async (
       const { public_id, secure_url } = await sendImageToCloudinary(
         payload.name,
         fileObj.path,
-        "video"
+        "video",
       );
 
       const videoData: TVideoAsset = {
@@ -86,7 +86,7 @@ const updateProductIntoDB = async (
   payload: Partial<TProduct> & {
     imageDelete?: string[];
     videoDelete?: string[];
-  }
+  },
 ) => {
   // check user info and status.
   await Client.isUserAndClientInformationFindBy_id(user.user_id);
@@ -118,7 +118,7 @@ const updateProductIntoDB = async (
   // check image delete request.
   if (payload.imageDelete && payload.imageDelete.length > 0) {
     const productImagePublicIds = existingProduct.images.map(
-      (img) => img.public_id
+      (img) => img.public_id,
     );
 
     for (const public_id of payload.imageDelete) {
@@ -132,7 +132,7 @@ const updateProductIntoDB = async (
     if (newImageCount < 1) {
       throw new AppError(
         400,
-        "Cannot delete all images. At least one image must remain."
+        "Cannot delete all images. At least one image must remain.",
       );
     }
 
@@ -140,7 +140,7 @@ const updateProductIntoDB = async (
       await deleteImageFromCloudinary(public_id, "image");
 
       existingProduct.images = existingProduct.images.filter(
-        (img) => img.public_id !== public_id
+        (img) => img.public_id !== public_id,
       );
     }
   }
@@ -148,7 +148,7 @@ const updateProductIntoDB = async (
   // check video delete request.
   if (payload.videoDelete && payload.videoDelete.length > 0) {
     const productVideoPublicIds = existingProduct?.video?.map(
-      (vid) => vid.public_id
+      (vid) => vid.public_id,
     );
 
     for (const public_id of payload.videoDelete) {
@@ -160,7 +160,7 @@ const updateProductIntoDB = async (
       await deleteImageFromCloudinary(public_id, "video");
 
       existingProduct.video = existingProduct?.video?.filter(
-        (vdo) => vdo.public_id !== public_id
+        (vdo) => vdo.public_id !== public_id,
       );
     }
   }
@@ -172,7 +172,7 @@ const updateProductIntoDB = async (
         await sendImageToCloudinary(
           payload.name ?? existingProduct.name,
           fileObj.path,
-          "image"
+          "image",
         );
 
       const imageData: TImageAsset = {
@@ -193,7 +193,7 @@ const updateProductIntoDB = async (
       const { public_id, secure_url } = await sendImageToCloudinary(
         payload.name ?? existingProduct.name,
         fileObj.path,
-        "video"
+        "video",
       );
 
       const videoData: TVideoAsset = {
@@ -236,7 +236,7 @@ const updateProductIntoDB = async (
 // fetch all product from db for admin..
 const fetchAllProductsForAdminFromDB = async (
   user: JwtPayload,
-  query: Record<string, unknown>
+  query: Record<string, unknown>,
 ) => {
   await Client.isUserAndClientInformationFindBy_id(user.user_id);
 
@@ -256,9 +256,9 @@ const fetchAllProductsForAdminFromDB = async (
 const fetchAllProductsFromDB = async (query: Record<string, unknown>) => {
   const productQuery = new QueryBuilder(
     Product.find({ isActive: { $ne: false } }).select(
-      "-costing -isActive -isDeleted -updatedAt"
+      "-costing -isActive -isDeleted -updatedAt",
     ),
-    query
+    query,
   )
     .search(productSearchableFields)
     .sort()

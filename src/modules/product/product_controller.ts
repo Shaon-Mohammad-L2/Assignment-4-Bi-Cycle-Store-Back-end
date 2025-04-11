@@ -7,7 +7,7 @@ const createProduct = catchAsync(async (req, res) => {
   const result = await ProductServices.createProductIntoDB(
     req.user,
     req.files,
-    req.body
+    req.body,
   );
 
   sendResponse(res, {
@@ -24,7 +24,7 @@ const updateProduct = catchAsync(async (req, res) => {
     req.user,
     req.params.id,
     req.files,
-    req.body
+    req.body,
   );
 
   sendResponse(res, {
@@ -39,7 +39,7 @@ const updateProduct = catchAsync(async (req, res) => {
 const getAllProductsForAdmin = catchAsync(async (req, res) => {
   const result = await ProductServices.fetchAllProductsForAdminFromDB(
     req.user,
-    req.query
+    req.query,
   );
 
   sendResponse(res, {

@@ -14,7 +14,7 @@ router.post(
   handleMultipleFileUpload,
   formDataToSetJSONformatData,
   validateRequest(ProductValidation.createProductValidationZodSchema),
-  ProdcutControllers.createProduct
+  ProdcutControllers.createProduct,
 );
 
 // product update.
@@ -24,14 +24,14 @@ router.put(
   handleMultipleFileUpload,
   formDataToSetJSONformatData,
   validateRequest(ProductValidation.updateProductValidationZodSchema),
-  ProdcutControllers.updateProduct
+  ProdcutControllers.updateProduct,
 );
 
 // fetch all products for admin.
 router.get(
   "/me",
   auth("admin", "developer", "superAdmin"),
-  ProdcutControllers.getAllProductsForAdmin
+  ProdcutControllers.getAllProductsForAdmin,
 );
 
 // fetch all products

@@ -9,7 +9,7 @@ cloudinary.config({
 
 export const deleteImageFromCloudinary = async (
   publicId: string,
-  resource_type: "image" | "video" = "image"
+  resource_type: "image" | "video" = "image",
 ) => {
   try {
     // Assuming cloudinary is configured

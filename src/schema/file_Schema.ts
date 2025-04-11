@@ -18,7 +18,7 @@ export const ImageSchema = new mongoose.Schema<TImageAsset>(
   },
   {
     _id: false,
-  }
+  },
 );
 export const VideoSchema = new mongoose.Schema<TVideoAsset>(
   {
@@ -33,5 +33,5 @@ export const VideoSchema = new mongoose.Schema<TVideoAsset>(
   },
   {
     _id: false,
-  }
+  },
 );

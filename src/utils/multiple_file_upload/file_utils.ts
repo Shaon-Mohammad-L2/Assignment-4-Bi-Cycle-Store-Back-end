@@ -33,7 +33,7 @@ const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
 export const handleMultipleFileUpload = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   // First, let Multer handle the basic uploading with a 50MB per-file limit:
   filesUpload.fields([{ name: "images" }, { name: "videos", maxCount: 1 }])(
@@ -62,7 +62,7 @@ export const handleMultipleFileUpload = (
         if (
           files.images &&
           files.images.some(
-            (file) => !allowedImageTypes.includes(file.mimetype)
+            (file) => !allowedImageTypes.includes(file.mimetype),
           )
         ) {
           throw new AppError(400, "Invalid images file type");
@@ -71,7 +71,7 @@ export const handleMultipleFileUpload = (
         if (
           files.videos &&
           files.videos.some(
-            (file) => !allowedVideoTypes.includes(file.mimetype)
+            (file) => !allowedVideoTypes.includes(file.mimetype),
           )
         ) {
           throw new AppError(400, "Invalid videos file type");
@@ -87,7 +87,7 @@ export const handleMultipleFileUpload = (
               console.error(
                 "Failed to remove oversized image:",
                 image.path,
-                unlinkErr
+                unlinkErr,
               );
             });
             throw new AppError(400, `One of the images exceeds the 5MB limit`);
@@ -106,15 +106,15 @@ export const handleMultipleFileUpload = (
                     console.error(
                       "Failed to remove file:",
                       file.path,
-                      unlinkErr
+                      unlinkErr,
                     );
-                  })
+                  }),
                 )
-              : []
-          )
+              : [],
+          ),
         );
         return next(validationError);
       }
-    }
+    },
   );
 };

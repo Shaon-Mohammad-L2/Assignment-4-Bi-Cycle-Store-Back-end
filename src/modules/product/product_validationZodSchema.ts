@@ -8,7 +8,7 @@ const productTagsSchema = z
       .max(30, "Product tag cannot exceed 30 characters."),
     {
       required_error: "Tags must be an array of strings.",
-    }
+    },
   )
   .nonempty("Tags cannot be empty!")
   .max(30, { message: "Tags cannot exceed 30 items!" });
@@ -20,7 +20,7 @@ const productImageDeleteSchema = z
       .min(1, "Image id must be at least 1 characters long."),
     {
       required_error: "Image Ids must be an array of strings.",
-    }
+    },
   )
   .nonempty("Tags cannot be empty!")
   .max(30, { message: "Tags cannot exceed 30 items!" });
@@ -42,7 +42,7 @@ const createProductValidationZodSchema = z.object({
       .string()
       .regex(
         /^[0-9a-fA-F]{24}$/,
-        "Invalid category ID format. Must be a valid MongoDB ObjectId."
+        "Invalid category ID format. Must be a valid MongoDB ObjectId.",
       )
       .optional(),
 
@@ -62,13 +62,13 @@ const createProductValidationZodSchema = z.object({
       .string({ required_error: "Costing is required." })
       .regex(
         /^\d+(\.\d{1,2})?$/,
-        "Costing must be a valid number in string format (e.g., '99.99')."
+        "Costing must be a valid number in string format (e.g., '99.99').",
       ),
     price: z
       .string({ required_error: "Price is required." })
       .regex(
         /^\d+(\.\d{1,2})?$/,
-        "Price must be a valid number in string format (e.g., '99.99')."
+        "Price must be a valid number in string format (e.g., '99.99').",
       ),
 
     stock: z
@@ -87,7 +87,7 @@ const createProductValidationZodSchema = z.object({
       .string()
       .regex(
         /^\d+(\.\d{1,2})?$/,
-        "Discount price must be a valid number in string format (e.g., '49.99')."
+        "Discount price must be a valid number in string format (e.g., '49.99').",
       )
       .optional(),
 
@@ -113,7 +113,7 @@ const updateProductValidationZodSchema = z.object({
       .string()
       .regex(
         /^[0-9a-fA-F]{24}$/,
-        "Invalid category ID format. Must be a valid MongoDB ObjectId."
+        "Invalid category ID format. Must be a valid MongoDB ObjectId.",
       )
       .optional(),
 
@@ -133,14 +133,14 @@ const updateProductValidationZodSchema = z.object({
       .string({ required_error: "Costing is required." })
       .regex(
         /^\d+(\.\d{1,2})?$/,
-        "Costing must be a valid number in string format (e.g., '99.99')."
+        "Costing must be a valid number in string format (e.g., '99.99').",
       )
       .optional(),
     price: z
       .string({ required_error: "Price is required." })
       .regex(
         /^\d+(\.\d{1,2})?$/,
-        "Price must be a valid number in string format (e.g., '99.99')."
+        "Price must be a valid number in string format (e.g., '99.99').",
       )
       .optional(),
     imageDelete: productImageDeleteSchema.optional(),
@@ -161,7 +161,7 @@ const updateProductValidationZodSchema = z.object({
       .string()
       .regex(
         /^\d+(\.\d{1,2})?$/,
-        "Discount price must be a valid number in string format (e.g., '49.99')."
+        "Discount price must be a valid number in string format (e.g., '49.99').",
       )
       .optional(),
 

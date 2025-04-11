@@ -11,7 +11,7 @@ router.post(
   "/create",
   auth("user"),
   validateRequest(OrderValidation.createOrderValidationZodSchema),
-  OrderController.createOrder
+  OrderController.createOrder,
 );
 
 export const OrderRoutes = router;

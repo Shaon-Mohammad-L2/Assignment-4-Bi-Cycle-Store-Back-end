@@ -3,7 +3,7 @@ import { FilterQuery, Query } from "mongoose";
 class QueryBuilder<T> {
   constructor(
     public modelQuery: Query<T[], T>,
-    public query: Record<string, unknown>
+    public query: Record<string, unknown>,
   ) {
     this.modelQuery = modelQuery;
     this.query = query;
@@ -17,7 +17,7 @@ class QueryBuilder<T> {
           (filed) =>
             ({
               [filed]: { $regex: search, $options: "i" },
-            }) as FilterQuery<T>
+            }) as FilterQuery<T>,
         ),
       });
     }
