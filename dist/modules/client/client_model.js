@@ -36,6 +36,9 @@ const ClientSchema = new mongoose_1.default.Schema({
     picture: {
         type: String,
     },
+    location: {
+        type: String,
+    },
 }, {
     timestamps: true,
 });
@@ -50,7 +53,7 @@ ClientSchema.statics.isUserAndClientInformationFindBy_id = function (_id) {
     return __awaiter(this, void 0, void 0, function* () {
         const user = yield user_model_1.User.isUserBlockedOrDeletedFindBy_id(_id);
         const client = yield exports.Client.findById(_id);
-        return { user, client };
+        return { userInfo: user, client };
     });
 };
 exports.Client = mongoose_1.default.model("Client", ClientSchema);

@@ -19,6 +19,7 @@ const handleMongooseCastError_1 = __importDefault(require("../errors/handleMongo
 const handleMongooseDuplicateError_1 = __importDefault(require("../errors/handleMongooseDuplicateError"));
 const AppError_1 = __importDefault(require("../errors/AppError"));
 const config_1 = __importDefault(require("../config"));
+const removeUploadedFiles_1 = require("../utils/removeUploadedFiles");
 const globalErrorHandler = (err, req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // Initialize default error details
     let statusCode = 500;
@@ -77,6 +78,12 @@ const globalErrorHandler = (err, req, res, next) => __awaiter(void 0, void 0, vo
                 message: err === null || err === void 0 ? void 0 : err.message,
             },
         ];
+    }
+    if (req.files) {
+        yield (0, removeUploadedFiles_1.removeUploadedFiles)(req.files);
+    }
+    if (req.file) {
+        yield (0, removeUploadedFiles_1.removeSingleUploadedFile)(req.file.path);
     }
     return res.status(statusCode).json({
         status: statusCode,
