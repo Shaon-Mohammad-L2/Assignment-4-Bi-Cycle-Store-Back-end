@@ -26,4 +26,14 @@ const createOrder = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
         data: result,
     });
 }));
-exports.OrderController = { createOrder };
+// update order status.
+const updateOrderStatus = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield order_service_1.OrderServices.updateOrderStatus(req.params.id, req.body);
+    (0, sendResponse_1.default)(res, {
+        status: 200,
+        success: true,
+        message: "Your order status updated successfully",
+        data: result,
+    });
+}));
+exports.OrderController = { createOrder, updateOrderStatus };

@@ -210,4 +210,95 @@ const createOrderIntoDB = (user, payload) => __awaiter(void 0, void 0, void 0, f
         }
     }
 });
-exports.OrderServices = { createOrderIntoDB };
+// update deleivery status.
+const updateOrderStatus = (orderId, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const existingOrder = yield order_model_1.Order.findById(orderId);
+    if (!existingOrder || existingOrder.isDeleted) {
+        throw new AppError_1.default(404, "This Order not found!");
+    }
+    if (existingOrder.deliveryStatus === "delivered") {
+        throw new AppError_1.default(400, "This order already delivered! You can't update it.");
+    }
+    const existingTransaction = yield transaction_model_1.Transaction.findById(existingOrder.transaction);
+    const next = payload.deliveryStatus;
+    const current = existingOrder.deliveryStatus;
+    // "pending" -> "confrim" or "cancel"
+    // "cancel" -> "confirm"
+    // "confirm" -> "on-curiar"
+    // "on-curiar" -> "return" or "delivered";
+    if (current === "pending") {
+        if (next !== "confirm" && next !== "cancel") {
+            throw new AppError_1.default(400, "Pending orders can only be confirm or cancel");
+        }
+    }
+    else if (current === "cancel") {
+        if (next !== "confirm") {
+            throw new AppError_1.default(400, "Canceled orders can only be re-confirm");
+        }
+    }
+    else if (current === "confirm") {
+        if (next !== "on-curiar") {
+            throw new AppError_1.default(400, "Confirmed orders can only move to on-curiar");
+        }
+    }
+    else if (current === "on-curiar") {
+        if (next !== "return" && next !== "delivered") {
+            throw new AppError_1.default(400, "On-curiar orders can only be marked as return or deliver");
+        }
+    }
+    else {
+        // should never happen if you have only the listed states
+        throw new AppError_1.default(400, `Illegal current state '${current}'`);
+    }
+    if ((current === "pending" && next === "confirm") ||
+        (current === "confirm" && next === "on-curiar") ||
+        (current === "on-curiar" && next === "delivered")) {
+        existingOrder.deliveryStatus = next;
+    }
+    if (current === "pending" && next === "cancel") {
+        const ops = existingOrder.products.map((p) => ({
+            updateOne: {
+                filter: { _id: p.productId },
+                update: { $inc: { stock: p.quantity } },
+            },
+        }));
+        yield product_model_1.Product.bulkWrite(ops);
+        existingOrder.deliveryStatus = next;
+    }
+    if (current === "cancel" && next === "confirm") {
+        const ops = existingOrder.products.map((p) => ({
+            updateOne: {
+                filter: { _id: p.productId },
+                update: { $inc: { stock: -p.quantity } },
+            },
+        }));
+        yield product_model_1.Product.bulkWrite(ops);
+        existingOrder.deliveryStatus = next;
+    }
+    if (current === "on-curiar" && next === "return") {
+        const ops = existingOrder.products.map((p) => ({
+            updateOne: {
+                filter: { _id: p.productId },
+                update: { $inc: { stock: p.quantity } },
+            },
+        }));
+        yield product_model_1.Product.bulkWrite(ops);
+        existingOrder.deliveryStatus = next;
+    }
+    if (payload.isDeleted) {
+        existingOrder.isDeleted = payload.isDeleted;
+        if (existingTransaction) {
+            existingTransaction.isDeleted = payload.isDeleted;
+            yield existingTransaction.save();
+        }
+    }
+    if (existingTransaction) {
+        existingTransaction.deliveryStatus = next;
+        yield existingTransaction.save();
+    }
+    if (payload.adminNote) {
+        existingOrder.adminNote = payload.adminNote;
+    }
+    yield existingOrder.save();
+});
+exports.OrderServices = { createOrderIntoDB, updateOrderStatus };

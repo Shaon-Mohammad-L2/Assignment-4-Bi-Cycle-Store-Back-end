@@ -56,7 +56,7 @@ const TransactionSchema = new mongoose_1.default.Schema({
         type: String,
         enum: [
             "pending",
-            "confrim",
+            "confirm",
             "cancel",
             "on-curiar",
             "return",

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderValidation = void 0;
 const zod_1 = require("zod");
+const order_constants_1 = require("./order_constants");
 const orderProductSchema = zod_1.z.object({
     productId: zod_1.z
         .string({
@@ -64,4 +65,22 @@ const createOrderValidationZodSchema = zod_1.z.object({
         isFullPay: zod_1.z.boolean({ required_error: "Payment method is required!" }),
     }),
 });
-exports.OrderValidation = { createOrderValidationZodSchema };
+const updateOrderStatusZodSchema = zod_1.z.object({
+    body: zod_1.z.object({
+        deliveryStatus: zod_1.z
+            .enum([...order_constants_1.deliveryStatus], {
+            required_error: "Delivery status is required!",
+        })
+            .optional(),
+        adminNote: zod_1.z
+            .string({ required_error: "Admin note is required!" })
+            .min(5)
+            .max(200)
+            .optional(),
+        isDeleted: zod_1.z.boolean().default(false).optional(),
+    }),
+});
+exports.OrderValidation = {
+    createOrderValidationZodSchema,
+    updateOrderStatusZodSchema,
+};

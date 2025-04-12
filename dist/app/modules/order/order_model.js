@@ -44,6 +44,10 @@ const OrderSchema = new mongoose_1.default.Schema({
         type: String,
         trim: true,
     },
+    adminNote: {
+        type: String,
+        trim: true,
+    },
     phone: {
         type: String,
         required: [true, "Phone is required!"],

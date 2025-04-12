@@ -12,4 +12,6 @@ const order_controller_1 = require("./order_controller");
 const router = express_1.default.Router();
 // create order
 router.post("/create", (0, auth_1.default)("user"), (0, validateRequest_1.default)(order_validationZodSchema_1.OrderValidation.createOrderValidationZodSchema), order_controller_1.OrderController.createOrder);
+// delivery status update.
+router.put("/:id/update-status", (0, auth_1.default)("admin", "developer", "superAdmin"), (0, validateRequest_1.default)(order_validationZodSchema_1.OrderValidation.updateOrderStatusZodSchema), order_controller_1.OrderController.updateOrderStatus);
 exports.OrderRoutes = router;

@@ -19,7 +19,7 @@ const is_live = false;
 // create order into db.
 const createOrderIntoDB = async (user: JwtPayload, payload: TOrder) => {
   const { client } = await Client.isUserAndClientInformationFindBy_id(
-    user.user_id
+    user.user_id,
   );
 
   if (!client) {
@@ -27,7 +27,7 @@ const createOrderIntoDB = async (user: JwtPayload, payload: TOrder) => {
   }
 
   const productIds = payload.products.map(
-    (id) => new Types.ObjectId(id.productId)
+    (id) => new Types.ObjectId(id.productId),
   );
 
   const isProductExist = await Product.find({
@@ -43,7 +43,7 @@ const createOrderIntoDB = async (user: JwtPayload, payload: TOrder) => {
 
   for (const product of isProductExist) {
     const orderProduct = payload.products.find(
-      (item) => item.productId.toString() === product._id.toString()
+      (item) => item.productId.toString() === product._id.toString(),
     );
 
     if (product.stock <= 0) {
@@ -115,7 +115,7 @@ const createOrderIntoDB = async (user: JwtPayload, payload: TOrder) => {
               {
                 $inc: { stock: -product.quantity },
               },
-              { session: session1 }
+              { session: session1 },
             );
           }
 
@@ -145,7 +145,7 @@ const createOrderIntoDB = async (user: JwtPayload, payload: TOrder) => {
           });
           await order.updateOne(
             { transaction: transaction._id },
-            { session: session1 }
+            { session: session1 },
           );
 
           await session1.commitTransaction();
@@ -182,7 +182,7 @@ const createOrderIntoDB = async (user: JwtPayload, payload: TOrder) => {
           {
             $inc: { stock: -product.quantity },
           },
-          { session: session2 }
+          { session: session2 },
         );
       }
       await session2.commitTransaction();
@@ -207,12 +207,12 @@ const updateOrderStatus = async (orderId: string, payload: TOrder) => {
   if (existingOrder.deliveryStatus === "delivered") {
     throw new AppError(
       400,
-      "This order already delivered! You can't update it."
+      "This order already delivered! You can't update it.",
     );
   }
 
   const existingTransaction = await Transaction.findById(
-    existingOrder.transaction
+    existingOrder.transaction,
   );
 
   const next = payload.deliveryStatus as TDeliveryStatus;
@@ -239,7 +239,7 @@ const updateOrderStatus = async (orderId: string, payload: TOrder) => {
     if (next !== "return" && next !== "delivered") {
       throw new AppError(
         400,
-        "On-curiar orders can only be marked as return or deliver"
+        "On-curiar orders can only be marked as return or deliver",
       );
     }
   } else {
