@@ -1,0 +1,547 @@
+{
+	"info": {
+		"_postman_id": "28bf52b9-e14c-47a6-87b7-3693f1b0813a",
+		"name": "Bi Cycle Store",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39964775"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"User\",\r\n    \"email\" : \"user123@mail.com\",\r\n    \"password\": \"newUser!23\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{biCyle_base_url}}/users/register",
+							"host": [
+								"{{biCyle_base_url}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"admin123@mail.com\",\r\n    \"password\": \"Admin!23\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{biCyle_base_url}}/auth/login",
+							"host": [
+								"{{biCyle_base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "client {{client_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\" : \"myPassword!23\",\r\n    \"newPassword\": \"myPassword!23!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{biCyle_base_url}}/auth/change-password",
+							"host": [
+								"{{biCyle_base_url}}"
+							],
+							"path": [
+								"auth",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "client {{client_token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\" : \"myPassword!23\",\r\n    \"newPassword\": \"myPassword!23!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{biCyle_base_url}}/auth/refresh-token",
+							"host": [
+								"{{biCyle_base_url}}"
+							],
+							"path": [
+								"auth",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password OTP sent",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "client {{client_token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"my@email.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{biCyle_base_url}}/auth/forgot-password",
+							"host": [
+								"{{biCyle_base_url}}"
+							],
+							"path": [
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify OTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"my@email.com\",\r\n    \"otp\" : \"516834\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{biCyle_base_url}}/auth/verify-otp",
+							"host": [
+								"{{biCyle_base_url}}"
+							],
+							"path": [
+								"auth",
+								"verify-otp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"my@email.com\",\r\n    \"newPassword\" : \"myPassword!23\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{biCyle_base_url}}/auth/reset-password",
+							"host": [
+								"{{biCyle_base_url}}"
+							],
+							"path": [
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "admin {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "data",
+									"value": "{\n    \"name\" : \"Bi Cycle 3\",\n    \"description\" : \"this is product description\",\n    \"category\" : \"67e0c5fd46a3003581a82792\",\n    \"brand\" : \"Duronto\",\n    \"costing\" : \"50\",\n    \"price\" : \"100\",\n    \"discountPrice\" : \"90\",\n    \"stock\"  : 100,\n    \"model\" : \"7059\",\n    \"tags\" : [\"bi cycle\"],\n    \"code\" : \"bi-0018\",\n    \"isActive\" : false\n}",
+									"type": "text"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": [
+										"/C:/Users/HP/Downloads/pexels-sunitalap-1616566.jpg",
+										"/C:/Users/HP/Downloads/pexels-alain-frechette-630635-1431117.jpg",
+										"/C:/Users/HP/Downloads/pexels-jvdm-1549306.jpg"
+									]
+								},
+								{
+									"key": "videos",
+									"type": "file",
+									"src": [
+										"/C:/Users/HP/Downloads/AQMNeuroD7UiYCQN02AzDvF_NZexjTU3tVFc-JHZ2fJ0H135oN6vRvXm_i-n7M-eGAgDF8BYANNR0V0wVh4Nm67Z.mp4",
+										"/C:/Users/HP/Downloads/videoplayback (1).mp4"
+									],
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{biCyle_base_url}}/products/create",
+							"host": [
+								"{{biCyle_base_url}}"
+							],
+							"path": [
+								"products",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "admin {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "data",
+									"value": "{\n    \"name\" : \"Bi Cycle 3\",\n    \"description\" : \"this is product description\",\n    \"category\" : \"67e0c5fd46a3003581a82792\",\n    \"brand\" : \"Duronto\",\n    \"costing\" : \"50\",\n    \"price\" : \"100\",\n    \"discountPrice\" : \"90\",\n    \"stock\"  : 100,\n    \"model\" : \"7059\",\n    \"tags\" : [\"bi cycle\"],\n    \"code\" : \"bi-0018\",\n    \"isActive\" : true\n\n}",
+									"type": "text"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": "/C:/Users/HP/Downloads/pexels-jvdm-1549306.jpg",
+									"disabled": true
+								},
+								{
+									"key": "videos",
+									"type": "file",
+									"src": [
+										"/C:/Users/HP/Downloads/AQMNeuroD7UiYCQN02AzDvF_NZexjTU3tVFc-JHZ2fJ0H135oN6vRvXm_i-n7M-eGAgDF8BYANNR0V0wVh4Nm67Z.mp4",
+										"/C:/Users/HP/Downloads/videoplayback (1).mp4"
+									],
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{biCyle_base_url}}/products/67ed1ffcaa4d1f07058c3036/update",
+							"host": [
+								"{{biCyle_base_url}}"
+							],
+							"path": [
+								"products",
+								"67ed1ffcaa4d1f07058c3036",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Products for Admin",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "admin {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{biCyle_base_url}}/products/me",
+							"host": [
+								"{{biCyle_base_url}}"
+							],
+							"path": [
+								"products",
+								"me"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "3",
+									"disabled": true
+								},
+								{
+									"key": "fileds",
+									"value": "-images",
+									"disabled": true
+								},
+								{
+									"key": "code",
+									"value": "bi-0017",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Products",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "admin {{admin_token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{biCyle_base_url}}/products?fileds=costing",
+							"host": [
+								"{{biCyle_base_url}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "3",
+									"disabled": true
+								},
+								{
+									"key": "fileds",
+									"value": "-images",
+									"disabled": true
+								},
+								{
+									"key": "code",
+									"value": "bi-0017",
+									"disabled": true
+								},
+								{
+									"key": "fileds",
+									"value": "costing"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "user {{user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"user 1\",\r\n    \"email\": \"my@email.com\",\r\n    \"phone\": \"01387219311\",\r\n    \"location\": \"my location here\",\r\n    \"note\": \"My Note here\",\r\n    \"products\": [\r\n        {\r\n            \"productId\":\"67ed1ffcaa4d1f07058c3036\",\r\n            \"quantity\": 1\r\n        },\r\n        {\r\n            \"productId\": \"67ed1ce00f9b797e416c0fd8\",\r\n            \"quantity\": 1\r\n        }\r\n    ],\r\n    \"isFullPay\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{biCyle_base_url}}/orders/create",
+							"host": [
+								"{{biCyle_base_url}}"
+							],
+							"path": [
+								"orders",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "admin {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"deliveryStatus\" : \"return\",\r\n    \"adminNote\" : \"fake customer\",\r\n    \"isDeleted\" : false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{biCyle_base_url}}/orders/67fa10c7a13295a07bda6f1f/update-status",
+							"host": [
+								"{{biCyle_base_url}}"
+							],
+							"path": [
+								"orders",
+								"67fa10c7a13295a07bda6f1f",
+								"update-status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "biCyle_base_url",
+			"value": "http://localhost:5000/v1/api",
+			"type": "string"
+		},
+		{
+			"key": "client_token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjdlMGIzMGQ0YTYyMGI1MDViODg3M2EyIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NDM1MzI3OTYsImV4cCI6MTc0NjEyNDc5Nn0.LFbtwDfZPAkcswvFu5-Jf6mOuQ2d_gtwex4C37wNkuM",
+			"type": "string"
+		},
+		{
+			"key": "admin_token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjdlZDIwYWE0NThjMzQ4Y2MwMTJjY2M5Iiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzQzNTkzNzEyLCJleHAiOjE3NDYxODU3MTJ9.q0ni2ro9RUP_xpYG284E10mt_DUT58ieH_93RzjRkCw",
+			"type": "string"
+		},
+		{
+			"key": "user_token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjdlZTc2ZDAxMGVhOTc3MDRhMjE5YzNkIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NDM2ODEyMzIsImV4cCI6MTc0NjI3MzIzMn0.k0ReeAxtXIVVJ0xEKZhwqiGXKoWeht45MCmPuLjHyjg",
+			"type": "string"
+		}
+	]
+}
