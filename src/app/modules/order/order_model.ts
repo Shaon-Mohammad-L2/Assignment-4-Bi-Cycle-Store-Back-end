@@ -14,7 +14,7 @@ const OrderProductSchema = new mongoose.Schema<TOrderProducts>(
       required: [true, "Product quantity is required"],
     },
   },
-  { _id: false },
+  { _id: false }
 );
 
 const OrderSchema = new mongoose.Schema<TOrder>(
@@ -42,6 +42,10 @@ const OrderSchema = new mongoose.Schema<TOrder>(
       trim: true,
     },
     note: {
+      type: String,
+      trim: true,
+    },
+    adminNote: {
       type: String,
       trim: true,
     },
@@ -114,7 +118,7 @@ const OrderSchema = new mongoose.Schema<TOrder>(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 export const Order = mongoose.model<TOrder>("Order", OrderSchema);

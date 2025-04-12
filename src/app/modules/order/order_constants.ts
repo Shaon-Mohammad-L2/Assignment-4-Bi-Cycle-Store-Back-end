@@ -1,7 +1,9 @@
+import { TDeliveryStatus } from "./order_interface";
+
 export const status = ["pending", "success"];
-export const deliveryStatus = [
+export const deliveryStatus: TDeliveryStatus[] = [
   "pending",
-  "confrim",
+  "confirm",
   "cancel",
   "on-curiar",
   "return",

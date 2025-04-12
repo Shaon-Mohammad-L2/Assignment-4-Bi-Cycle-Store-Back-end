@@ -5,6 +5,14 @@ export type TOrderProducts = {
   quantity: number;
 };
 
+export type TDeliveryStatus =
+  | "pending"
+  | "confirm"
+  | "cancel"
+  | "on-curiar"
+  | "return"
+  | "delivered";
+
 export type TOrder = {
   _id?: Types.ObjectId;
   orderID: string;
@@ -14,6 +22,7 @@ export type TOrder = {
   phone: string;
   location?: string;
   note?: string;
+  adminNote?: string;
   paid: number;
   due: number;
   totalAmount: number;
@@ -25,12 +34,6 @@ export type TOrder = {
   transaction?: Types.ObjectId | null;
   isFullPay: boolean;
   status: "pending" | "success";
-  deliveryStatus:
-    | "pending"
-    | "confrim"
-    | "cancel"
-    | "on-curiar"
-    | "return"
-    | "delivered";
+  deliveryStatus: TDeliveryStatus;
   isDeleted: boolean;
 };

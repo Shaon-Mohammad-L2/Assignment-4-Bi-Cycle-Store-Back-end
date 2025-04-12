@@ -1,4 +1,5 @@
-import { z } from "zod";
+import { string, z } from "zod";
+import { deliveryStatus } from "./order_constants";
 
 const orderProductSchema = z.object({
   productId: z
@@ -8,7 +9,7 @@ const orderProductSchema = z.object({
     })
     .regex(
       /^[0-9a-fA-F]{24}$/,
-      "Invalid Product ID format. Must be a valid MongoDB ObjectId.",
+      "Invalid Product ID format. Must be a valid MongoDB ObjectId."
     ),
   quantity: z
     .number({ required_error: "Product quantity is required." })
@@ -70,4 +71,23 @@ const createOrderValidationZodSchema = z.object({
   }),
 });
 
-export const OrderValidation = { createOrderValidationZodSchema };
+const updateOrderStatusZodSchema = z.object({
+  body: z.object({
+    deliveryStatus: z
+      .enum([...(deliveryStatus as [string, ...string[]])], {
+        required_error: "Delivery status is required!",
+      })
+      .optional(),
+    adminNote: z
+      .string({ required_error: "Admin note is required!" })
+      .min(5)
+      .max(200)
+      .optional(),
+    isDeleted: z.boolean().default(false).optional(),
+  }),
+});
+
+export const OrderValidation = {
+  createOrderValidationZodSchema,
+  updateOrderStatusZodSchema,
+};

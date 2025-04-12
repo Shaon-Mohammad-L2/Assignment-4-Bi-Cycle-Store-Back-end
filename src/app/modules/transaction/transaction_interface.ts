@@ -31,7 +31,7 @@ export type TTransaction = {
   status: "pending" | "success";
   deliveryStatus:
     | "pending"
-    | "confrim"
+    | "confirm"
     | "cancel"
     | "on-curiar"
     | "return"
